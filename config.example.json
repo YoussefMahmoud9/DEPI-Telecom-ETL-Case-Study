@@ -1,0 +1,6 @@
+{
+  "connection_string": "DRIVER={ODBC Driver 18 for SQL Server};SERVER=.\\SQLEXPRESS;DATABASE=SSIS_Telecom_DB;Trusted_Connection=yes;Encrypt=no;TrustServerCertificate=yes",
+  "input_folder": "data/inbox",
+  "archive_folder": "data/archive",
+  "dry_run": false
+}

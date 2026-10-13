@@ -1,0 +1,1746 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/13/2026 11:47:56 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:Description="Native SSIS telecom ETL: Foreach file, Flat File Source, validation staging, SQL finalization and archive."
+  DTS:DTSID="{ACA61DA6-CB5A-420E-A55D-D44B1253D206}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.5"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="TelecomNativeETL"
+  DTS:VersionGUID="{54FB0129-11F0-47CC-A4F0-AE0F67E266FE}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_ArchiveFolder]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{C8349D3E-C3FF-410E-83DF-6CAB733E42B2}"
+      DTS:ObjectName="CM_ArchiveFolder">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:FileUsageType="2"
+          DTS:ConnectionString="E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-archive" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_ArchiveTarget]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{0CBA79E7-0019-4A42-AE36-3AA14ADC91BB}"
+      DTS:ObjectName="CM_ArchiveTarget">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[User::ArchiveTargetPath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-archive\" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_CurrentFile]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{2A9B6E08-BF40-4D07-AF51-1949301DC2A1}"
+      DTS:ObjectName="CM_CurrentFile">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[User::CurrentFilePath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-inbox\" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_SourceFile]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{10309A41-C1BC-4AB8-97AF-647B0F62DFF5}"
+      DTS:ObjectName="CM_SourceFile">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[User::CurrentFilePath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowsToSkip="1"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter="_x000D__x000A_"
+          DTS:TextQualifier=""
+          DTS:CodePage="1252"
+          DTS:AlwaysCheckForRowDelimiters="False"
+          DTS:ConnectionString="E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-inbox\">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="129"
+              DTS:ObjectName="ID"
+              DTS:DTSID="{84E26442-92A1-437E-9E6C-3EFA5C5F4A47}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="129"
+              DTS:ObjectName="IMSI"
+              DTS:DTSID="{0365C126-7ED3-4D12-BA15-33E4EDB8898A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="129"
+              DTS:ObjectName="IMEI"
+              DTS:DTSID="{218ADED2-7CF6-4016-93BF-D6E354606E13}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="129"
+              DTS:ObjectName="CELL"
+              DTS:DTSID="{12514E65-1676-4EBF-8676-95096B7D29C3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="129"
+              DTS:ObjectName="LAC"
+              DTS:DTSID="{BE19A024-5146-4A41-A7A7-B4DF5828E57A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="129"
+              DTS:ObjectName="EVENT_TYPE"
+              DTS:DTSID="{4918082D-F567-49AF-910A-3F0A86AF9FD3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x007C_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="129"
+              DTS:ObjectName="EVENT_TS"
+              DTS:DTSID="{F5B21AE2-FF57-4F21-8B53-7D434888E8BE}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:ColumnWidth="100"
+              DTS:DataType="130"
+              DTS:ObjectName="SOURCE_FILE"
+              DTS:DTSID="{E81C91F1-2F84-4B26-9CAB-B108D0464B02}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CM_SQLServer]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{C2CA4BAB-4AAC-4BF2-8F5D-2E8B8F5C2187}"
+      DTS:ObjectName="CM_SQLServer">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=SSIS_Telecom_Native_Test_DB;Provider=MSOLEDBSQL;Integrated Security=SSPI;Trust Server Certificate=True;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{89C6C84B-35E5-4C6C-8043-B86F60741563}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ArchiveDirectory">
+      <DTS:VariableValue
+        DTS:DataType="8">E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-archive</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{A0D16CFA-20DC-4A12-BBEF-53A7F2085E76}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::ArchiveDirectory] + &quot;\\&quot; + @[User::CurrentFileName]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ArchiveTargetPath">
+      <DTS:VariableValue
+        DTS:DataType="8">E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-archive\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C9F1AAB8-36A3-4A40-B257-7332A3C93B3B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CurrentFileName">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{82375BF3-A282-4DFE-903B-ED06AB50642C}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[User::InboxDirectory] + &quot;\\&quot; + @[User::CurrentFileName]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CurrentFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8">E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-inbox\</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{405B40A3-551F-4A64-B418-02D9D361B590}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="InboxDirectory">
+      <DTS:VariableValue
+        DTS:DataType="8">E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-inbox</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F8F8ABB8-C139-4C26-9247-B39D114D7C02}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="SourceRowCount">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\FEL_ProcessCSVFiles"
+      DTS:CreationName="STOCK:FOREACHLOOP"
+      DTS:DTSID="{6730DF89-3BE5-4D5D-B2A5-3538E9D00956}"
+      DTS:ExecutableType="STOCK:FOREACHLOOP"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="FEL_ProcessCSVFiles">
+      <DTS:ForEachEnumerator
+        DTS:CreationName="Microsoft.ForEachFileEnumerator"
+        DTS:DTSID="{38E86A11-0814-40F3-AB07-1525BAC1B6EF}"
+        DTS:ObjectName="{38E86A11-0814-40F3-AB07-1525BAC1B6EF}">
+        <DTS:ObjectData>
+          <ForEachFileEnumeratorProperties>
+            <FEFEProperty
+              Folder="E:\Depi\Techincal\Case Study Telecom ETL\runtime\native-inbox" />
+            <FEFEProperty
+              FileSpec="*.csv" />
+            <FEFEProperty
+              FileNameRetrievalType="1" />
+            <FEFEProperty
+              Recurse="0" />
+          </ForEachFileEnumeratorProperties>
+        </DTS:ObjectData>
+      </DTS:ForEachEnumerator>
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:DTSID="{2E7A7FDC-FDFE-49CC-AFEB-82D158B1E70B}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFT_ProcessCurrentCSV"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Conditional Split"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="ID"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[IMSI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMSI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMSI]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[IMEI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMEI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMEI]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[CELL]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="CELL"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[CELL]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[LAC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="LAC"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[LAC]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[EVENT_TYPE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TYPE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TYPE]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[EVENT_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TS"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TS]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input].Columns[SOURCE_FILE]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="SOURCE_FILE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[SOURCE_FILE]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[RejectedRequiredFields]"
+                      errorRowDisposition="IgnoreFailure"
+                      exclusionGroup="1"
+                      name="RejectedRequiredFields"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="IgnoreFailure">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          name="EvaluationOrder">0</property>
+                        <property
+                          dataType="System.String"
+                          name="Expression">ISNULL([IMSI]) || ISNULL([CELL]) || ISNULL([LAC])</property>
+                        <property
+                          dataType="System.String"
+                          name="FriendlyExpression">Missing required field (IMSI, CELL, or LAC)</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived Column"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="ID"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[IMSI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMSI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMSI]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[IMEI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMEI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[CELL]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="CELL"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[CELL]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[LAC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="LAC"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[LAC]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[EVENT_TYPE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TYPE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TYPE]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[EVENT_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TS"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TS]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input].Columns[SOURCE_FILE]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="SOURCE_FILE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[SOURCE_FILE]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output].Columns[TAC]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          length="8"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output].Columns[TAC]"
+                          name="TAC"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[LEN](#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]}) &gt;= 14 ? [LEFT](#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]},8) : "-99999"</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">LEN(IMEI) &gt;= 14 ? LEFT(IMEI,8) : "-99999"</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output].Columns[SNR]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          length="6"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output].Columns[SNR]"
+                          name="SNR"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[LEN](#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]}) &gt;= 14 ? [RIGHT](#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]},6) : "-99999"</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">LEN(IMEI) &gt;= 14 ? RIGHT(IMEI,6) : "-99999"</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source"
+                  componentClassID="Microsoft.FlatFileSource"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1033"
+                  name="Flat File Source"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[CM_SourceFile]"
+                      connectionManagerRefId="Package.ConnectionManagers[CM_SourceFile]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[ID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ID]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[ID]"
+                          name="ID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMSI]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IMSI]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMSI]"
+                          name="IMSI"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMEI]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IMEI]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMEI]"
+                          name="IMEI"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[CELL]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CELL]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[CELL]"
+                          name="CELL"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[LAC]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[LAC]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[LAC]"
+                          name="LAC"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TYPE]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EVENT_TYPE]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TYPE]"
+                          name="EVENT_TYPE"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EVENT_TS]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TS]"
+                          name="EVENT_TS"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[SOURCE_FILE]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SOURCE_FILE]"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[SOURCE_FILE]"
+                          name="SOURCE_FILE"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IMSI]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="IMSI" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[IMEI]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="IMEI" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CELL]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="CELL" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[LAC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="LAC" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EVENT_TYPE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="EVENT_TYPE" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[EVENT_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="EVENT_TS" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[SOURCE_FILE]"
+                          dataType="wstr"
+                          length="255"
+                          name="SOURCE_FILE" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup"
+                  componentClassID="Microsoft.Lookup"
+                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+                  name="Lookup"
+                  usesDispositions="true"
+                  version="6">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the SQL statement that generates the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT imsi, subscriber_id FROM dbo.dim_imsi_reference</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                      expressionType="Notify"
+                      name="SqlCommandParam"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of connection used to access the reference dataset."
+                      name="ConnectionType"
+                      typeConverter="LookupConnectionType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the cache type of the lookup table."
+                      name="CacheType"
+                      typeConverter="CacheType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                      name="NoMatchBehavior"
+                      typeConverter="LookupNoMatchBehavior">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                      name="NoMatchCachePercentage">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                      name="MaxMemoryUsage">25</property>
+                    <property
+                      dataType="System.Int64"
+                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                      name="MaxMemoryUsage64">25</property>
+                    <property
+                      dataType="System.String"
+                      description="Indicates whether to reference metadata in an XML format."
+                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="imsi" dataType="DT_STR" length="9" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="subscriber_id" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                      name="ParameterMap"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                      name="TreatDuplicateKeysAsError">false</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[CM_SQLServer]"
+                      connectionManagerRefId="Package.ConnectionManagers[CM_SQLServer]"
+                      description="Connection manager used to access lookup data."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input]"
+                      hasSideEffects="true"
+                      name="Lookup Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input].Columns[IMSI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMSI"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input].ExternalColumns[imsi]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMSI]">
+                          <properties>
+                            <property
+                              dataType="System.String"
+                              description="Specifies the column in the reference table that a column joins."
+                              name="JoinToReferenceColumn">imsi</property>
+                            <property
+                              dataType="System.Null"
+                              description="Specifies the column in the reference table from which a column is copied."
+                              name="CopyFromReferenceColumn" />
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns>
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input].ExternalColumns[imsi]"
+                          codePage="1252"
+                          dataType="str"
+                          length="9"
+                          name="imsi" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Outputs[Lookup Match Output]"
+                      errorOrTruncationOperation="Lookup"
+                      exclusionGroup="1"
+                      name="Lookup Match Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Outputs[Lookup No Match Output]"
+                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                      exclusionGroup="1"
+                      name="Lookup No Match Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Outputs[Lookup Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Lookup Error Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence"
+                  componentClassID="Microsoft.Multicast"
+                  contactInfo="Multicast;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Distributes every input row to every row in one or more outputs. For example, branch your data flow to make a copy of data so that some values can be masked before sharing with external partners."
+                  name="MCAST_LookupAndPersistence">
+                  <inputs>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Inputs[Multicast Input 1]"
+                      name="Multicast Input 1">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Outputs[Multicast Output 1]"
+                      deleteOutputOnPathDetached="true"
+                      name="Multicast Output 1"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Inputs[Multicast Input 1]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Outputs[Multicast Output 2]"
+                      deleteOutputOnPathDetached="true"
+                      name="Multicast Output 2"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Inputs[Multicast Input 1]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Outputs[Multicast Output 3]"
+                      dangling="true"
+                      deleteOutputOnPathDetached="true"
+                      name="Multicast Output 3"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Inputs[Multicast Input 1]">
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">dbo.etl_ssis_stage_raw</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">0</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[CM_SQLServer]"
+                      connectionManagerRefId="Package.ConnectionManagers[CM_SQLServer]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="ID"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[IMSI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMSI"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IMSI]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMSI]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[IMEI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMEI"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IMEI]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CELL]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="CELL"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CELL]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[CELL]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[LAC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="LAC"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LAC]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[LAC]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EVENT_TYPE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TYPE"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EVENT_TYPE]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TYPE]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EVENT_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TS"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EVENT_TS]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TS]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SOURCE_FILE]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="SOURCE_FILE"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[source_file]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[SOURCE_FILE]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[TAC]"
+                          cachedDataType="wstr"
+                          cachedLength="8"
+                          cachedName="TAC"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TAC]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output].Columns[TAC]" />
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SNR]"
+                          cachedDataType="wstr"
+                          cachedLength="6"
+                          cachedName="SNR"
+                          externalMetadataColumnId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SNR]"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output].Columns[SNR]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[stage_id]"
+                          dataType="i8"
+                          name="stage_id" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[source_file]"
+                          dataType="wstr"
+                          length="512"
+                          name="source_file" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IMSI]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="IMSI" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[IMEI]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="IMEI" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CELL]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="CELL" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[LAC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="LAC" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EVENT_TYPE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="EVENT_TYPE" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EVENT_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="EVENT_TS" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TAC]"
+                          dataType="wstr"
+                          length="100"
+                          name="TAC" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SNR]"
+                          dataType="wstr"
+                          length="100"
+                          name="SNR" />
+                        <externalMetadataColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[load_ts]"
+                          dataType="dbTimeStamp2"
+                          name="load_ts"
+                          scale="3" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Row Count"
+                  componentClassID="Microsoft.RowCount"
+                  contactInfo="Row Count;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Counts rows as they pass through a data flow. For example, use the number of rows processed to determine whether or not to perform cleanup operations, or update text in an e-mail message to communicate processing status."
+                  name="Row Count">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable to hold the row count."
+                      name="VariableName">User::SourceRowCount</property>
+                  </properties>
+                  <inputs>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Row Count.Inputs[Row Count Input 1]"
+                      hasSideEffects="true"
+                      name="Row Count Input 1">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Row Count.Outputs[Row Count Output 1]"
+                      name="Row Count Output 1"
+                      synchronousInputId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Row Count.Inputs[Row Count Input 1]">
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All"
+                  componentClassID="Microsoft.UnionAll"
+                  contactInfo="Union All;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Combines rows from multiple data flows without sorting. For example, add rows back to a data flow after correction of errors. If sorting is important, we recommend using the Merge transformation."
+                  name="Union All"
+                  version="1">
+                  <inputs>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1]"
+                      name="Union All Input 1">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="ID"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[ID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[ID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[IMSI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMSI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMSI]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMSI]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[IMEI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMEI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMEI]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[CELL]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="CELL"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[CELL]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[CELL]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[LAC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="LAC"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[LAC]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[LAC]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[EVENT_TYPE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TYPE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TYPE]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TYPE]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[EVENT_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TS"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TS]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TS]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1].Columns[SOURCE_FILE]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="SOURCE_FILE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[SOURCE_FILE]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[SOURCE_FILE]}</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2]"
+                      hasSideEffects="true"
+                      name="Union All Input 2">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[ID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="ID"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[ID]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[ID]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[IMSI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMSI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMSI]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMSI]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[IMEI]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="IMEI"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[IMEI]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[CELL]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="CELL"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[CELL]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[CELL]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[LAC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="LAC"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[LAC]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[LAC]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[EVENT_TYPE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TYPE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TYPE]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TYPE]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[EVENT_TS]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="255"
+                          cachedName="EVENT_TS"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[EVENT_TS]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TS]}</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2].Columns[SOURCE_FILE]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="SOURCE_FILE"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output].Columns[SOURCE_FILE]">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="Output column lineage ID"
+                              name="OutputColumnLineageID">#{Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[SOURCE_FILE]}</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1]"
+                      name="Union All Output 1">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[ID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[ID]"
+                          name="ID" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMSI]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMSI]"
+                          name="IMSI" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[IMEI]"
+                          name="IMEI" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[CELL]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[CELL]"
+                          name="CELL" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[LAC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[LAC]"
+                          name="LAC" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TYPE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TYPE]"
+                          name="EVENT_TYPE" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TS]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[EVENT_TS]"
+                          name="EVENT_TS" />
+                        <outputColumn
+                          refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[SOURCE_FILE]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1].Columns[SOURCE_FILE]"
+                          name="SOURCE_FILE" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[Conditional Split Default Output]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 1]"
+                  name="Conditional Split Default Output"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[Conditional Split Default Output]" />
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[Derived Column Output]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[Flat File Source Output]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Row Count.Inputs[Row Count Input 1]"
+                  name="Flat File Source Output"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Flat File Source.Outputs[Flat File Source Output]" />
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[Multicast Output 1]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Lookup.Inputs[Lookup Input]"
+                  name="Multicast Output 1"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Outputs[Multicast Output 1]" />
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[Multicast Output 2]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Derived Column.Inputs[Derived Column Input]"
+                  name="Multicast Output 2"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Outputs[Multicast Output 2]" />
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[RejectedRequiredFields]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Inputs[Union All Input 2]"
+                  name="RejectedRequiredFields"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Outputs[RejectedRequiredFields]" />
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[Row Count Output 1]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Conditional Split.Inputs[Conditional Split Input]"
+                  name="Row Count Output 1"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Row Count.Outputs[Row Count Output 1]" />
+                <path
+                  refId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV.Paths[Union All Output 1]"
+                  endId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\MCAST_LookupAndPersistence.Inputs[Multicast Input 1]"
+                  name="Union All Output 1"
+                  startId="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV\Union All.Outputs[Union All Output 1]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\FEL_ProcessCSVFiles\FST_ArchiveCurrentFile"
+          DTS:CreationName="Microsoft.FileSystemTask"
+          DTS:DTSID="{05CCFF91-E747-4DA0-A945-473C43F218D5}"
+          DTS:ExecutableType="Microsoft.FileSystemTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="FST_ArchiveCurrentFile"
+          DTS:TaskContact="File System Task;Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <FileSystemData
+              TaskOperationType="MoveFile"
+              TaskOverwriteDestFile="True"
+              TaskSourcePath="{2A9B6E08-BF40-4D07-AF51-1949301DC2A1}"
+              TaskDestinationPath="{0CBA79E7-0019-4A42-AE36-3AA14ADC91BB}" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\FEL_ProcessCSVFiles\SQL_ClearNativeStage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{148D4186-0625-41D8-9281-880D194718C1}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL_ClearNativeStage"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{C2CA4BAB-4AAC-4BF2-8F5D-2E8B8F5C2187}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE dbo.etl_ssis_stage_raw;"
+              SQLTask:ResultType="0" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\FEL_ProcessCSVFiles\SQL_FinalizeCurrentFile"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DTSID="{E0910521-8D96-474F-BB39-A6F20A9DAE09}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="SQL_FinalizeCurrentFile"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{C2CA4BAB-4AAC-4BF2-8F5D-2E8B8F5C2187}"
+              SQLTask:SqlStatementSource="EXEC dbo.usp_finalize_native_stage;"
+              SQLTask:ResultType="0" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\FEL_ProcessCSVFiles.PrecedenceConstraints[{7F976BDC-39C8-4420-A436-C525F7D5D4F7\}]"
+          DTS:CreationName=""
+          DTS:DTSID="{7F976BDC-39C8-4420-A436-C525F7D5D4F7}"
+          DTS:From="Package\FEL_ProcessCSVFiles\SQL_ClearNativeStage"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="{7F976BDC-39C8-4420-A436-C525F7D5D4F7}"
+          DTS:To="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\FEL_ProcessCSVFiles.PrecedenceConstraints[{8AB79EF2-D4F6-4FF0-AAD0-9DA68AC874C5\}]"
+          DTS:CreationName=""
+          DTS:DTSID="{8AB79EF2-D4F6-4FF0-AAD0-9DA68AC874C5}"
+          DTS:From="Package\FEL_ProcessCSVFiles\DFT_ProcessCurrentCSV"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="{8AB79EF2-D4F6-4FF0-AAD0-9DA68AC874C5}"
+          DTS:To="Package\FEL_ProcessCSVFiles\SQL_FinalizeCurrentFile" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\FEL_ProcessCSVFiles.PrecedenceConstraints[{ED4C6E8D-ED94-4146-B8D8-D8BDFE6860C3\}]"
+          DTS:CreationName=""
+          DTS:DTSID="{ED4C6E8D-ED94-4146-B8D8-D8BDFE6860C3}"
+          DTS:From="Package\FEL_ProcessCSVFiles\SQL_FinalizeCurrentFile"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="{ED4C6E8D-ED94-4146-B8D8-D8BDFE6860C3}"
+          DTS:To="Package\FEL_ProcessCSVFiles\FST_ArchiveCurrentFile" />
+      </DTS:PrecedenceConstraints>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{C9FF3C10-F423-4002-AF01-BEE9DDBAADFD}"
+          DTS:ObjectName="{C9FF3C10-F423-4002-AF01-BEE9DDBAADFD}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::CurrentFileName" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+  </DTS:Executables>
+</DTS:Executable>
